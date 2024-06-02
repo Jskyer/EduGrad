@@ -1,0 +1,211 @@
+syntax = "v1"
+
+type (
+	ProposalDraft {
+		ID         string `json:"id"`
+		InstructId string `json:"instructId"`
+		Content    string `json:"content"`
+		Comment    string `json:"comment"`
+		CreateAt   string `json:"createAt"`
+	}
+	ProposalFormal {
+		ID         string `json:"id"`
+		InstructId string `json:"instructId"`
+		Content    string `json:"content"`
+		Comment    string `json:"comment"`
+		CreateAt   string `json:"createAt"`
+	}
+	PaperDraft {
+		ID         string `json:"id"`
+		InstructId string `json:"instructId"`
+		Content    string `json:"content"`
+		Comment    string `json:"comment"`
+		CreateAt   string `json:"createAt"`
+	}
+	PaperFormal {
+		ID         string `json:"id"`
+		InstructId string `json:"instructId"`
+		Content    string `json:"content"`
+		Comment    string `json:"comment"`
+		CreateAt   string `json:"createAt"`
+	}
+	PaperFinal {
+		ID          string `json:"id"`
+		InstructId  string `json:"instructId"`
+		Content     string `json:"content"`
+		Comment     string `json:"comment"`
+		CheckResult string `json:"checkResult"`
+		CreateAt    string `json:"createAt"`
+	}
+	UploadFileReq {
+		InstructId string `form:"instructId"`
+		Content    string `form:"content,optional"`
+	}
+	UploadPaperFormalResp {
+		Filename string `json:"filename"`
+	}
+	DownloadFileReq {
+		Filepath string `json:"filepath"`
+	}
+	DownloadPaperFormalResp  {}
+	ListPaperFormalReq {
+		InstructId string `form:"instructId"`
+	}
+	ListPaperFormalResp {
+		PaperFormals []PaperFormal `json:"paperFormals"`
+	}
+	CommentPaperFormalReq {
+		Id      string `json:"id"`
+		Comment string `json:"comment"`
+	}
+	CommentPaperFormalResp {
+		Ok int64 `json:"ok"`
+	}
+	UploadProposalDraftResp {
+		Filename string `json:"filename"`
+	}
+	DownloadProposalDraftResp  {}
+	ListProposalDraftReq {
+		InstructId string `form:"instructId"`
+	}
+	ListProposalDraftResp {
+		ProposalDrafts []ProposalDraft `json:"proposalDrafts"`
+	}
+	CommentProposalDraftReq {
+		Id      string `json:"id"`
+		Comment string `json:"comment"`
+	}
+	CommentProposalDraftResp {
+		Ok int64 `json:"ok"`
+	}
+	UploadProposalFormalResp {
+		Filename string `json:"filename"`
+	}
+	DownloadProposalFormalResp  {}
+	ListProposalFormalReq {
+		InstructId string `form:"instructId"`
+	}
+	ListProposalFormalResp {
+		ProposalFormals []ProposalFormal `json:"proposalFormals"`
+	}
+	CommentProposalFormalReq {
+		Id      string `json:"id"`
+		Comment string `json:"comment"`
+	}
+	CommentProposalFormalResp {
+		Ok int64 `json:"ok"`
+	}
+	UploadPaperDraftResp {
+		Filename string `json:"filename"`
+	}
+	DownloadPaperDraftResp  {}
+	ListPaperDraftReq {
+		InstructId string `form:"instructId"`
+	}
+	ListPaperDraftResp {
+		PaperDrafts []PaperDraft `json:"paperDrafts"`
+	}
+	CommentPaperDraftReq {
+		Id      string `json:"id"`
+		Comment string `json:"comment"`
+	}
+	CommentPaperDraftResp {
+		Ok int64 `json:"ok"`
+	}
+	UploadPaperFinalResp {
+		Filename string `json:"filename"`
+	}
+	DownloadPaperFinalResp  {}
+	ListPaperFinalReq {
+		InstructId string `form:"instructId"`
+	}
+	ListPaperFinalResp {
+		PaperFinals []PaperFinal `json:"paperFinals"`
+	}
+	CommentPaperFinalReq {
+		Id      string `json:"id"`
+		Comment string `json:"comment"`
+	}
+	CommentPaperFinalResp {
+		Ok int64 `json:"ok"`
+	}
+	CheckPaperFinalReq {
+		Id          string `json:"id"`
+		CheckResult string `json:"checkResult"`
+	}
+	CheckPaperFinalResp {
+		Ok int64 `json:"ok"`
+	}
+)
+
+@server (
+	prefix: /paper
+	jwt:    JwtAuth
+)
+service paper {
+	@handler uploadPaperFormal
+	post /paperformal/upload (UploadFileReq) returns (UploadPaperFormalResp)
+
+	@handler downloadPaperFormal
+	post /paperformal/download (DownloadFileReq) returns (DownloadPaperFormalResp)
+
+	@handler listPaperFormal
+	get /paperformal/list (ListPaperFormalReq) returns (ListPaperFormalResp)
+
+	@handler commentPaperFormal
+	post /paperformal/comment (CommentPaperFormalReq) returns (CommentPaperFormalResp)
+
+	@handler uploadProposalDraft
+	post /proposaldraft/upload (UploadFileReq) returns (UploadProposalDraftResp)
+
+	@handler downloadProposalDraft
+	post /proposaldraft/download (DownloadFileReq) returns (DownloadProposalDraftResp)
+
+	@handler listProposalDraft
+	get /proposaldraft/list (ListProposalDraftReq) returns (ListProposalDraftResp)
+
+	@handler commentProposalDraft
+	post /proposaldraft/comment (CommentProposalDraftReq) returns (CommentProposalDraftResp)
+
+	@handler uploadProposalFormal
+	post /proposalformal/upload (UploadFileReq) returns (UploadProposalFormalResp)
+
+	@handler downloadProposalFormal
+	post /proposalformal/download (DownloadFileReq) returns (DownloadProposalFormalResp)
+
+	@handler listProposalFormal
+	get /proposalformal/list (ListProposalFormalReq) returns (ListProposalFormalResp)
+
+	@handler commentProposalFormal
+	post /proposalformal/comment (CommentProposalFormalReq) returns (CommentProposalFormalResp)
+
+	@handler uploadPaperDraft
+	post /paperdraft/upload (UploadFileReq) returns (UploadPaperDraftResp)
+
+	@handler downloadPaperDraft
+	post /paperdraft/download (DownloadFileReq) returns (DownloadPaperDraftResp)
+
+	@handler listPaperDraft
+	get /paperdraft/list (ListPaperDraftReq) returns (ListPaperDraftResp)
+
+	@handler commentPaperDraft
+	post /paperdraft/comment (CommentPaperDraftReq) returns (CommentPaperDraftResp)
+
+	@handler uploadPaperFinal
+	post /paperfinal/upload (UploadFileReq) returns (UploadPaperFinalResp)
+
+	@handler downloadPaperFinal
+	post /paperfinal/download (DownloadFileReq) returns (DownloadPaperFinalResp)
+
+	@handler listPaperFinal
+	get /paperfinal/list (ListPaperFinalReq) returns (ListPaperFinalResp)
+
+	@handler commentPaperFinal
+	post /paperfinal/comment (CommentPaperFinalReq) returns (CommentPaperFinalResp)
+
+	@handler checkPaperFinal
+	post /paperfinal/check (CheckPaperFinalReq) returns (CheckPaperFinalResp)
+}
+
+// goctl api go -api paper.api -dir .
+// goctl docker -go paper.go

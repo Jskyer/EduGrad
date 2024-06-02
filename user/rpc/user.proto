@@ -1,0 +1,245 @@
+syntax = "proto3";
+
+package user;
+option go_package="proto/user";
+
+message LoginReq {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResp {
+  string id = 1;
+  string name = 2;
+  string token = 3;
+  string expireAt = 4;
+}
+
+message GenerateTokenReq {
+  string userId = 1;
+}
+message GenerateTokenResp {
+  string accessToken = 1;
+  int64  accessExpire = 2;
+}
+
+message RegisterReq {
+  string username = 1;
+  string password = 2;
+  string identity = 3;
+  string grade = 4;
+}
+
+message RegisterResp {
+  int64 ok = 1;
+}
+
+message UserInfo {
+  string id = 1;
+  string username = 2;
+  string password = 3;
+  string identity = 4;
+  string grade = 5;
+}
+
+message GetUserInfoReq {
+  string id = 1;
+}
+
+message GetUserInfoResp {
+  UserInfo user = 1;
+}
+
+message UpdateUserInfoReq {
+  UserInfo user = 1;
+}
+
+message UpdateUserInfoResp {
+  int64 updated = 1;
+}
+
+message GetUserPageReq {
+  int64 pageNum = 1;
+  int64 pageSize = 2;
+}
+
+message GetUserPageResp {
+  repeated UserInfo users = 1;
+  int64 total = 2;
+}
+
+message GetUserCondPageReq {
+  string grade = 1;
+  string identity = 2;
+  int64 pageNum = 3;
+  int64 pageSize = 4;
+}
+
+message GetUserCondPageResp {
+  repeated UserInfo users = 1;
+  int64 total = 2;
+}
+
+message InstructRelation {
+  string id = 1;
+  string stuId = 2;
+  string stuName = 3;
+  string teacherId = 4;
+  string teacherName = 5;
+  string permit = 6;
+  string state = 7;
+  string title = 8;
+}
+
+message AddInstructReq {
+  string stuId = 1;
+  string teacherId = 2;
+  string permit = 3;
+}
+
+message AddInstructResp {
+  int64 ok = 1;
+}
+
+message UpdateInstructReq {
+  string id = 1;
+  string permit = 2;
+}
+
+message UpdateInstructResp {
+  int64 updated = 1;
+}
+
+message GetInstructByStuIdReq {
+  string stuId = 1;
+}
+
+message GetInstructByStuIdResp {
+  repeated InstructRelation instructs = 1;
+}
+
+message GetListByTeacherIdReq {
+  string teacherId = 1;
+}
+
+message GetListByTeacherIdResp {
+  repeated InstructRelation instructs = 1;
+}
+
+message UpdateTitleReq {
+  string id = 1;
+  string title = 2;
+}
+
+message UpdateTitleResp {
+  int64 updated = 1;
+}
+
+message UpdateStateReq {
+  string id = 1;
+  string state = 2;
+}
+
+message UpdateStateResp {
+  int64 updated = 1;
+}
+
+message Phase {
+  string id = 1;
+  string term = 2;
+  int64 process = 3;
+}
+
+message AddPhaseReq {
+  string term = 1;
+  int64 process = 2;
+}
+
+message AddPhaseResp {
+  int64 ok = 1;
+}
+
+message UpdateProcessReq {
+  string id = 1;
+  int64 process = 2;
+}
+
+message UpdateProcessResp {
+  int64 updated = 1;
+}
+
+message ListTermSortReq {
+  int64 pageNum = 1;
+  int64 pageSize = 2;
+}
+
+message ListTermSortResp {
+  repeated Phase phases = 1;
+  int64 total = 2;
+}
+
+message PhaseRelation {
+  string id = 1;
+  string phaseId = 2;
+  string userId = 3;
+  string identity = 4;
+  int64 pass = 5;
+}
+
+message AddPhaseRelationReq {
+  string id = 1;
+  repeated string users = 2;
+  string grade = 3;
+}
+
+message AddPhaseRelationResp {
+  int64 ok = 1;
+}
+
+message EndPhaseRelationReq {
+  string id = 1;
+}
+
+message EndPhaseRelationResp {
+  int64 ok = 1;
+}
+
+message ListPhaseRelationReq {
+  string id = 1;
+  string identity = 2;
+  int64 pageNum = 3;
+  int64 pageSize = 4;
+}
+
+message ListPhaseRelationResp {
+  repeated UserInfo users = 1;
+  int64 total = 2;
+}
+
+service User {
+  rpc login(LoginReq) returns(LoginResp);
+  rpc register(RegisterReq) returns(RegisterResp);
+  rpc getUserInfo(GetUserInfoReq) returns(GetUserInfoResp);
+  rpc updateUserInfo(UpdateUserInfoReq) returns(UpdateUserInfoResp);
+  rpc generateToken(GenerateTokenReq) returns(GenerateTokenResp);
+  rpc getUserPage(GetUserPageReq) returns(GetUserPageResp);
+  rpc getUserCondPage(GetUserCondPageReq) returns(GetUserCondPageResp);
+
+  rpc addInstruct(AddInstructReq) returns (AddInstructResp);
+  rpc updateInstruct(UpdateInstructReq) returns (UpdateInstructResp);
+  rpc getInstructByStuId(GetInstructByStuIdReq) returns (GetInstructByStuIdResp);
+  rpc getListByTeacherId(GetListByTeacherIdReq) returns (GetListByTeacherIdResp);
+  rpc updateTitle(UpdateTitleReq) returns (UpdateTitleResp);
+  rpc updateState(UpdateStateReq) returns (UpdateStateResp);
+
+  rpc addPhase(AddPhaseReq) returns (AddPhaseResp);
+  rpc updateProcess(UpdateProcessReq) returns (UpdateProcessResp);
+  rpc listTermSort(ListTermSortReq) returns (ListTermSortResp);
+
+  rpc addPhaseRelation(AddPhaseRelationReq) returns (AddPhaseRelationResp);
+  rpc endPhaseRelation(EndPhaseRelationReq) returns (EndPhaseRelationResp);
+  rpc listPhaseRelation(ListPhaseRelationReq) returns (ListPhaseRelationResp);
+
+}
+
+// goctl rpc protoc user/rpc/user.proto --go_out=user/rpc/types --go-grpc_out=user/rpc/types --zrpc_out=user/rpc/

@@ -1,0 +1,21 @@
+Name: user.rpc
+ListenOn: 0.0.0.0:8080
+Timeout: 5000
+
+Etcd:
+  Hosts:
+  - 101.132.245.82:2379
+  Key: user.rpc
+Mongo:
+  URL: mongodb://myroot:123456@101.132.245.82:10001
+  DB: EduGrad
+  CollectionName: user
+
+Redis:
+  Host: 101.132.245.82:6379
+  Type: node
+  Key: my-redis
+
+JwtAuth:
+  AccessSecret: etcecnusecretoooo # 密钥
+  AccessExpire: 3600 # 过期时间，单位 秒

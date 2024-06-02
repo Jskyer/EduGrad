@@ -1,0 +1,286 @@
+syntax = "v1"
+
+type (
+	// 定义登录接口的 json 请求体
+	LoginReq {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+	// 定义登录接口的 json 响应体
+	LoginResp {
+		Id       string `json:"id"`
+		Name     string `json:"name"`
+		Token    string `json:"token"`
+		ExpireAt string `json:"expireAt"`
+	}
+	RegisterReq {
+		Username string `json:"username"`
+		Password string `json:"password"`
+		Identity string `json:"identity"`
+		Grade    string `json:"grade"`
+	}
+	RegisterResp {
+		Ok int64 `json:"ok"`
+	}
+)
+
+type (
+	User {
+		Id       string `json:"id"`
+		Username string `json:"username"`
+		Password string `json:"password,optional"`
+		Identity string `json:"identity,optional"`
+		Grade    string `json:"grade,optional"`
+	}
+	// 定义获取用户信息的 json 请求体
+	GetUserInfoReq {
+		Id string `form:"id"`
+	}
+	// 定义获取用户信息的 json 响应体
+	GetUserInfoResp {
+		User
+	}
+	// 定义更新用户信息的 json 请求体
+	UpdateUserInfoReq {
+		ID       string `json:"id"`
+		Password string `json:"password,optional"`
+		Grade    string `json:"grade,optional"`
+	}
+	UpdateUserInfoResp {
+		Updated int64 `json:"updated"`
+	}
+	UploadFileReq {
+		UploadFile string `json:"upload,optional"`
+	}
+	UploadFileResp {
+		Filename string `json:"filename"`
+	}
+	DownloadReq {
+		Filepath string `json:"filepath"`
+	}
+	DownloadResp {
+		Ok int64 `json:"ok"`
+	}
+	GetUserPageReq {
+		PageNum  int64 `form:"pageNum"`
+		PageSize int64 `form:"pageSize"`
+	}
+	GetUserPageResp {
+		Users []User `json:"users"`
+		Total int64  `json:"total"`
+	}
+	GetUserCondPageReq {
+		Grade    string `form:"grade,optional"`
+		Identity string `form:"identity,optional"`
+		PageNum  int64  `form:"pageNum"`
+		PageSize int64  `form:"pageSize"`
+	}
+	GetUserCondPageResp {
+		Users []User `json:"users"`
+		Total int64  `json:"total"`
+	}
+)
+
+type (
+	InstructRelation {
+		Id          string `json:"id"`
+		StuID       string `json:"stuId"`
+		StuName     string `json:"stuName"`
+		TeacherID   string `json:"teacherId"`
+		TeacherName string `json:"teacherName"`
+		Permit      string `json:"permit"`
+		State       string `json:"state"`
+		Title       string `json:"title"`
+	}
+	AddInstructReq {
+		StuID     string `json:"stuId"`
+		TeacherID string `json:"teacherId"`
+		Permit    string `json:"permit"`
+	}
+	AddInstructResp {
+		Ok int64 `json:"ok"`
+	}
+	UpdateInstructReq {
+		Id     string `json:"id"`
+		Permit string `json:"permit"`
+	}
+	UpdateInstructResp {
+		Updated int64 `json:"updated"`
+	}
+	GetInstructByStuIdReq {
+		StuID string `form:"stuId"`
+	}
+	GetInstructByStuIdResp {
+		Instructs []InstructRelation `json:"instructs"`
+	}
+	GetListByTeacherIdReq {
+		TeacherID string `form:"teacherId"`
+	}
+	GetListByTeacherIdResp {
+		Instructs []InstructRelation `json:"instructs"`
+	}
+	UpdateTitleReq {
+		Id    string `json:"id"`
+		Title string `json:"title"`
+	}
+	UpdateTitleResp {
+		Updated int64 `json:"updated"`
+	}
+	UpdateStateReq {
+		Id    string `json:"id"`
+		State string `json:"state"`
+	}
+	UpdateStateResp {
+		Updated int64 `json:"updated"`
+	}
+	Phase {
+		ID      string `json:"id"`
+		Term    string `json:"term"`
+		Process int64  `json:"process"`
+	}
+	AddPhaseReq {
+		Term    string `json:"term"`
+		Process int64  `json:"process"`
+	}
+	AddPhaseResp {
+		Ok int64 `json:"ok"`
+	}
+	UpdateProcessReq {
+		Id      string `json:"id"`
+		Process int64  `json:"process"`
+	}
+	UpdateProcessResp {
+		Updated int64 `json:"updated"`
+	}
+	ListTermSortReq {
+		PageNum  int64 `form:"pageNum"`
+		PageSize int64 `form:"pageSize"`
+	}
+	ListTermSortResp {
+		Phases []Phase `json:"phases"`
+		Total  int64   `json:"total"`
+	}
+	PhaseRelation {
+		Id       string `json:"id"`
+		PhaseId  string `json:"phaseId"`
+		UserId   string `json:"userId"`
+		Identity string `json:"identity"`
+		Pass     int64  `json:"pass"`
+	}
+	AddPhaseRelationReq {
+		Id    string   `json:"id"`
+		Users []string `json:"users,optional"`
+		Grade string   `json:"grade,optional"`
+	}
+	AddPhaseRelationResp {
+		Ok int64 `json:"ok"`
+	}
+	EndPhaseRelationReq {
+		Id string `json:"id"`
+	}
+	EndPhaseRelationResp {
+		Ok int64 `json:"ok"`
+	}
+	ListPhaseRelationReq {
+		Id       string `form:"id"`
+		Identity string `form:"identity"`
+		PageNum  int64  `form:"pageNum"`
+		PageSize int64  `form:"pageSize"`
+	}
+	ListPhaseRelationResp {
+		Users []User `json:"users"`
+		Total int64  `json:"total"`
+	}
+)
+
+@server (
+	prefix: /user
+)
+service user {
+	@handler login
+	post /login (LoginReq) returns (LoginResp)
+}
+
+@server (
+	prefix: /user
+	jwt:    JwtAuth
+)
+service user {
+	@handler registerUser
+	post /register (RegisterReq) returns (RegisterResp)
+
+	@handler getUserInfo
+	get /info (GetUserInfoReq) returns (GetUserInfoResp)
+
+	@handler getUserPage
+	get /page (GetUserPageReq) returns (GetUserPageResp)
+
+	@handler getUserCondPage
+	get /condpage (GetUserCondPageReq) returns (GetUserCondPageResp)
+
+	@handler updateUserInfo
+	post /info/update (UpdateUserInfoReq) returns (UpdateUserInfoResp)
+
+	@handler uploadFile
+	post /uploadFile (UploadFileReq) returns (UploadFileResp)
+
+	@handler downloadFile
+	post /downloadFile (DownloadReq) returns (DownloadResp)
+}
+
+@server (
+	prefix: /instruct
+	jwt:    JwtAuth
+)
+service user {
+	@handler addInstruct
+	post /add (AddInstructReq) returns (AddInstructResp)
+
+	@handler updateInstruct
+	post /update (UpdateInstructReq) returns (UpdateInstructResp)
+
+	@handler getInstructByStuId
+	get /oneStu (GetInstructByStuIdReq) returns (GetInstructByStuIdResp)
+
+	@handler getListByTeacherId
+	get /listTeacher (GetListByTeacherIdReq) returns (GetListByTeacherIdResp)
+
+	@handler updateTitle
+	post /updateTitle (UpdateTitleReq) returns (UpdateTitleResp)
+
+	@handler updateState
+	post /updateState (UpdateStateReq) returns (UpdateStateResp)
+}
+
+@server (
+	prefix: /phase
+	jwt:    JwtAuth
+)
+service user {
+	@handler addPhase
+	post /add (AddPhaseReq) returns (AddPhaseResp)
+
+	@handler updateProcess
+	post /updateProcess (UpdateProcessReq) returns (UpdateProcessResp)
+
+	@handler listTermSort
+	get /termlist (ListTermSortReq) returns (ListTermSortResp)
+}
+
+@server (
+	prefix: /phaseRelation
+	jwt:    JwtAuth
+)
+service user {
+	@handler addPhaseRelation
+	post /add (AddPhaseRelationReq) returns (AddPhaseRelationResp)
+
+	@handler endPhaseRelation
+	post /end (EndPhaseRelationReq) returns (EndPhaseRelationResp)
+
+	@handler listPhaseRelation
+	get /identitylist (ListPhaseRelationReq) returns (ListPhaseRelationResp)
+}
+
+// goctl api go -api user/api/user.api -dir user/api
+// goctl docker -go user.go

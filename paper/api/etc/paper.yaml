@@ -1,0 +1,21 @@
+Name: paper
+Host: 0.0.0.0
+Port: 8889
+
+# 文件大小上限 20MB
+MaxBytes: 20971520
+
+UserRpc:
+  Etcd:
+    Hosts:
+    - 101.132.245.82:2379
+    Key: user.rpc
+PaperRpc:
+  Etcd:
+    Hosts:
+    - 101.132.245.82:2379
+    Key: paper.rpc
+
+JwtAuth:
+  AccessSecret: etcecnusecretoooo # 密钥
+  AccessExpire: 3600 # 过期时间，单位 秒

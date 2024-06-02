@@ -1,0 +1,185 @@
+syntax = "proto3";
+
+package paper;
+option go_package="proto/paper";
+
+message PaperFormal {
+    string id = 1;
+    string instructId = 2;
+    string content = 3;
+    string comment = 4;
+    string createAt = 5;
+}
+
+message UploadFileReq {
+    string instructId = 1;
+    string content = 2;
+}
+
+message UploadPaperFormalResp {
+    string filename = 1;
+}
+
+message ListPaperFormalReq {
+    string instructId = 1;
+}
+
+message ListPaperFormalResp {
+    repeated PaperFormal paperFormals = 1;
+}
+
+message CommentPaperFormalReq {
+    string id = 1;
+    string comment = 2;
+}
+
+message CommentPaperFormalResp {
+    int64 ok = 1;
+}
+
+message ProposalDraft {
+    string id = 1;
+    string instructId = 2;
+    string content = 3;
+    string comment = 4;
+    string createAt = 5;
+}
+
+message UploadProposalDraftResp {
+    string filename = 1;
+}
+
+message ListProposalDraftReq {
+    string instructId = 1;
+}
+message ListProposalDraftResp {
+    repeated ProposalDraft proposalDrafts = 1;
+}
+
+message CommentProposalDraftReq {
+    string id = 1;
+    string comment = 2;
+}
+message CommentProposalDraftResp {
+    int64 ok = 1;
+}
+
+
+message ProposalFormal {
+    string id = 1;
+    string instructId = 2;
+    string content = 3;
+    string comment = 4;
+    string createAt = 5;
+}
+
+message UploadProposalFormalResp {
+    string filename = 1;
+}
+
+message ListProposalFormalReq {
+    string instructId = 1;
+}
+message ListProposalFormalResp {
+    repeated ProposalFormal proposalFormals = 1;
+}
+
+message CommentProposalFormalReq {
+    string id = 1;
+    string comment = 2;
+}
+message CommentProposalFormalResp {
+    int64 ok = 1;
+}
+
+message PaperDraft {
+    string id = 1;
+    string instructId = 2;
+    string content = 3;
+    string comment = 4;
+    string createAt = 5;
+}
+
+message UploadPaperDraftResp {
+    string filename = 1;
+}
+
+message ListPaperDraftReq {
+    string instructId = 1;
+}
+message ListPaperDraftResp {
+    repeated PaperDraft paperDrafts = 1;
+}
+
+message CommentPaperDraftReq {
+    string id = 1;
+    string comment = 2;
+}
+message CommentPaperDraftResp {
+    int64 ok = 1;
+}
+
+message PaperFinal {
+    string id = 1;
+    string instructId = 2;
+    string content = 3;
+    string comment = 4;
+    string checkResult = 5;
+    string createAt = 6;
+}
+
+message UploadPaperFinalResp {
+    string filename = 1;
+}
+
+message ListPaperFinalReq {
+    string instructId = 1;
+}
+message ListPaperFinalResp {
+    repeated PaperFinal paperFinals = 1;
+}
+
+message CommentPaperFinalReq {
+    string id = 1;
+    string comment = 2;
+}
+message CommentPaperFinalResp {
+    int64 ok = 1;
+}
+
+message CheckPaperFinalReq {
+    string id = 1;
+    string checkResult = 2;
+}
+
+message CheckPaperFinalResp {
+    int64 ok = 1;
+}
+
+
+service Paper {
+    rpc uploadPaperFormal(UploadFileReq) returns (UploadPaperFormalResp);
+    // rpc downloadPaperFormal(DownloadFileReq) returns (DownloadPaperFormalResp);
+    rpc listPaperFormal(ListPaperFormalReq) returns (ListPaperFormalResp);
+    rpc commentPaperFormal(CommentPaperFormalReq) returns (CommentPaperFormalResp);
+
+    rpc uploadProposalDraft(UploadFileReq) returns (UploadProposalDraftResp);
+    rpc listProposalDraft(ListProposalDraftReq) returns (ListProposalDraftResp);
+    rpc commentProposalDraft(CommentProposalDraftReq) returns (CommentProposalDraftResp);
+
+    rpc uploadProposalFormal(UploadFileReq) returns (UploadProposalFormalResp);
+    rpc listProposalFormal(ListProposalFormalReq) returns (ListProposalFormalResp);
+    rpc commentProposalFormal(CommentProposalFormalReq) returns (CommentProposalFormalResp);
+
+    rpc uploadPaperDraft(UploadFileReq) returns (UploadPaperDraftResp);
+    rpc listPaperDraft(ListPaperDraftReq) returns (ListPaperDraftResp);
+    rpc commentPaperDraft(CommentPaperDraftReq) returns (CommentPaperDraftResp);
+
+    rpc uploadPaperFinal(UploadFileReq) returns (UploadPaperFinalResp);
+    rpc listPaperFinal(ListPaperFinalReq) returns (ListPaperFinalResp);
+    rpc commentPaperFinal(CommentPaperFinalReq) returns (CommentPaperFinalResp);
+    rpc checkPaperFinal(CheckPaperFinalReq) returns (CheckPaperFinalResp);
+
+}
+
+// goctl rpc protoc paper/rpc/paper.proto --go_out=paper/rpc/types --go-grpc_out=paper/rpc/types --zrpc_out=paper/rpc/
