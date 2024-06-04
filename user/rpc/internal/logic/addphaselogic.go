@@ -41,15 +41,21 @@ func (l *AddPhaseLogic) AddPhase(in *user.AddPhaseReq) (*user.AddPhaseResp, erro
 		return nil, errors.New("process不合法")
 	}
 
-	err = l.svcCtx.PhaseModel.Insert(l.ctx, &model.Phase{
+	data := model.Phase{
 		Term:    in.Term,
 		Process: in.Process,
-	})
+	}
+
+	err = l.svcCtx.PhaseModel.Insert(l.ctx, &data)
 	if err != nil {
 		return nil, err
 	}
 
+	// fmt.Println("data.ID")
+	// fmt.Println(data.ID.Hex())
+
 	return &user.AddPhaseResp{
-		Ok: 1,
+		Ok:      1,
+		Phaseid: data.ID.Hex(),
 	}, nil
 }

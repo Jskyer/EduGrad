@@ -157,6 +157,7 @@ message AddPhaseReq {
 
 message AddPhaseResp {
   int64 ok = 1;
+  string phaseid = 2;
 }
 
 message UpdateProcessReq {

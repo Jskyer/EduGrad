@@ -27,7 +27,8 @@ type AddPhaseReq struct {
 }
 
 type AddPhaseResp struct {
-	Ok int64 `json:"ok"`
+	Ok      int64  `json:"ok"`
+	Phaseid string `json:"phaseid"`
 }
 
 type DownloadReq struct {
