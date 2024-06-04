@@ -26,7 +26,7 @@ func NewListPhaseRelationLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 
 func (l *ListPhaseRelationLogic) ListPhaseRelation(in *user.ListPhaseRelationReq) (*user.ListPhaseRelationResp, error) {
 	// todo: add your logic here and delete this line
-	phaseRelationModels, totalPage, err := l.svcCtx.PhaseRelationModel.ListByPhaseidAndIdentity(l.ctx, in.Id, in.Identity, in.PageNum, in.PageSize)
+	phaseRelationModels, totalPage, cnt, err := l.svcCtx.PhaseRelationModel.ListByPhaseidAndIdentity(l.ctx, in.Id, in.Identity, in.PageNum, in.PageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -49,5 +49,6 @@ func (l *ListPhaseRelationLogic) ListPhaseRelation(in *user.ListPhaseRelationReq
 	return &user.ListPhaseRelationResp{
 		Users: userinfos,
 		Total: totalPage,
+		Count: cnt,
 	}, nil
 }

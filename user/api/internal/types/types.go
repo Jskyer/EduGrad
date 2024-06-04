@@ -73,6 +73,7 @@ type GetUserCondPageReq struct {
 type GetUserCondPageResp struct {
 	Users []User `json:"users"`
 	Total int64  `json:"total"`
+	Count int64  `json:"count"`
 }
 
 type GetUserInfoReq struct {
@@ -91,6 +92,7 @@ type GetUserPageReq struct {
 type GetUserPageResp struct {
 	Users []User `json:"users"`
 	Total int64  `json:"total"`
+	Count int64  `json:"count"`
 }
 
 type InstructRelation struct {
@@ -114,6 +116,7 @@ type ListPhaseRelationReq struct {
 type ListPhaseRelationResp struct {
 	Users []User `json:"users"`
 	Total int64  `json:"total"`
+	Count int64  `json:"count"`
 }
 
 type ListTermSortReq struct {
@@ -124,6 +127,7 @@ type ListTermSortReq struct {
 type ListTermSortResp struct {
 	Phases []Phase `json:"phases"`
 	Total  int64   `json:"total"`
+	Count  int64   `json:"count"`
 }
 
 type LoginReq struct {

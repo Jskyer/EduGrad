@@ -17,8 +17,8 @@ type (
 	UserModel interface {
 		userModel
 		FindOneByName(ctx context.Context, username string) (*User, error)
-		FindByPage(ctx context.Context, pageNum int64, pageSize int64) ([]*User, int64, error)
-		FindPageByGradeAndIdentity(ctx context.Context, identity string, grade string, pageNum int64, pageSize int64) ([]*User, int64, error)
+		FindByPage(ctx context.Context, pageNum int64, pageSize int64) ([]*User, int64, int64, error)
+		FindPageByGradeAndIdentity(ctx context.Context, identity string, grade string, pageNum int64, pageSize int64) ([]*User, int64, int64, error)
 		FindStuById(ctx context.Context, id string) (*User, error)
 		FindTeacherById(ctx context.Context, id string) (*User, error)
 		ListTeacherOrStuByGrade(ctx context.Context, grade string) ([]*User, error)
@@ -52,7 +52,7 @@ func (m *customUserModel) FindOneByName(ctx context.Context, username string) (*
 	}
 }
 
-func (m *customUserModel) FindByPage(ctx context.Context, pageNum int64, pageSize int64) ([]*User, int64, error) {
+func (m *customUserModel) FindByPage(ctx context.Context, pageNum int64, pageSize int64) ([]*User, int64, int64, error) {
 	var data []*User
 
 	opts := new(options.FindOptions)
@@ -63,22 +63,22 @@ func (m *customUserModel) FindByPage(ctx context.Context, pageNum int64, pageSiz
 	err := m.conn.Find(ctx, &data, bson.M{}, opts)
 	// err := m.conn.Find(ctx, &data, bson.M{})
 	if err != nil {
-		return nil, 0, err
+		return nil, 0, 0, err
 	}
 
 	// 对应filter的记录总数
 	cnt, err := m.conn.CountDocuments(ctx, bson.M{})
 	if err != nil {
-		return nil, 0, err
+		return nil, 0, 0, err
 	}
 
 	// 转换为总页数
 	totalPage := (cnt + pageSize - 1) / pageSize
 
-	return data, totalPage, nil
+	return data, totalPage, cnt, nil
 }
 
-func (m *customUserModel) FindPageByGradeAndIdentity(ctx context.Context, identity string, grade string, pageNum int64, pageSize int64) ([]*User, int64, error) {
+func (m *customUserModel) FindPageByGradeAndIdentity(ctx context.Context, identity string, grade string, pageNum int64, pageSize int64) ([]*User, int64, int64, error) {
 	var data []*User
 
 	filter := bson.M{}
@@ -97,19 +97,19 @@ func (m *customUserModel) FindPageByGradeAndIdentity(ctx context.Context, identi
 	// 分页查询列表
 	err := m.conn.Find(ctx, &data, filter, opts)
 	if err != nil {
-		return nil, 0, err
+		return nil, 0, 0, err
 	}
 
 	// 对应filter的记录总数
 	cnt, err := m.conn.CountDocuments(ctx, filter)
 	if err != nil {
-		return nil, 0, err
+		return nil, 0, 0, err
 	}
 
 	// 转换为总页数
 	totalPage := (cnt + pageSize - 1) / pageSize
 
-	return data, totalPage, nil
+	return data, totalPage, cnt, nil
 }
 
 func (m *customUserModel) FindStuById(ctx context.Context, id string) (*User, error) {

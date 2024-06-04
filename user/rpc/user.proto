@@ -66,6 +66,7 @@ message GetUserPageReq {
 message GetUserPageResp {
   repeated UserInfo users = 1;
   int64 total = 2;
+  int64 count = 3;
 }
 
 message GetUserCondPageReq {
@@ -78,6 +79,7 @@ message GetUserCondPageReq {
 message GetUserCondPageResp {
   repeated UserInfo users = 1;
   int64 total = 2;
+  int64 count = 3;
 }
 
 message InstructRelation {
@@ -177,6 +179,7 @@ message ListTermSortReq {
 message ListTermSortResp {
   repeated Phase phases = 1;
   int64 total = 2;
+  int64 count = 3;
 }
 
 message PhaseRelation {
@@ -215,6 +218,7 @@ message ListPhaseRelationReq {
 message ListPhaseRelationResp {
   repeated UserInfo users = 1;
   int64 total = 2;
+  int64 count = 3;
 }
 
 service User {

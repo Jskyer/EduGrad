@@ -15,7 +15,7 @@ type (
 	// and implement the added methods in customPhaseModel.
 	PhaseModel interface {
 		phaseModel
-		ListByTermSorted(ctx context.Context, pageNum int64, pageSize int64) ([]*Phase, int64, error)
+		ListByTermSorted(ctx context.Context, pageNum int64, pageSize int64) ([]*Phase, int64, int64, error)
 		FindCurrentPhase(ctx context.Context) (*Phase, error)
 		FindOneByTerm(ctx context.Context, term string) (*Phase, error)
 	}
@@ -33,7 +33,7 @@ func NewPhaseModel(url, db, collection string) PhaseModel {
 	}
 }
 
-func (m *customPhaseModel) ListByTermSorted(ctx context.Context, pageNum int64, pageSize int64) ([]*Phase, int64, error) {
+func (m *customPhaseModel) ListByTermSorted(ctx context.Context, pageNum int64, pageSize int64) ([]*Phase, int64, int64, error) {
 	var data []*Phase
 
 	opts := new(options.FindOptions)
@@ -47,19 +47,19 @@ func (m *customPhaseModel) ListByTermSorted(ctx context.Context, pageNum int64, 
 
 	err := m.conn.Find(ctx, &data, bson.M{}, opts)
 	if err != nil {
-		return nil, 0, err
+		return nil, 0, 0, err
 	}
 
 	// 对应filter的记录总数
 	cnt, err := m.conn.CountDocuments(ctx, bson.M{})
 	if err != nil {
-		return nil, 0, err
+		return nil, 0, 0, err
 	}
 
 	// 转换为总页数
 	totalPage := (cnt + pageSize - 1) / pageSize
 
-	return data, totalPage, nil
+	return data, totalPage, cnt, nil
 }
 
 func (m *customPhaseModel) FindCurrentPhase(ctx context.Context) (*Phase, error) {

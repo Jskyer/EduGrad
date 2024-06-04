@@ -25,7 +25,7 @@ func NewGetUserCondPageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *G
 
 func (l *GetUserCondPageLogic) GetUserCondPage(in *user.GetUserCondPageReq) (*user.GetUserCondPageResp, error) {
 	// todo: add your logic here and delete this line
-	userModels, totalPage, err := l.svcCtx.UserModel.FindPageByGradeAndIdentity(l.ctx, in.Identity, in.Grade, in.PageNum, in.PageSize)
+	userModels, totalPage, cnt, err := l.svcCtx.UserModel.FindPageByGradeAndIdentity(l.ctx, in.Identity, in.Grade, in.PageNum, in.PageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -43,5 +43,6 @@ func (l *GetUserCondPageLogic) GetUserCondPage(in *user.GetUserCondPageReq) (*us
 	return &user.GetUserCondPageResp{
 		Users: users,
 		Total: totalPage,
+		Count: cnt,
 	}, nil
 }

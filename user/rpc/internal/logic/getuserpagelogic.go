@@ -25,7 +25,7 @@ func NewGetUserPageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 
 func (l *GetUserPageLogic) GetUserPage(in *user.GetUserPageReq) (*user.GetUserPageResp, error) {
 	// todo: add your logic here and delete this line
-	userModels, totalPage, err := l.svcCtx.UserModel.FindByPage(l.ctx, in.PageNum, in.PageSize)
+	userModels, totalPage, cnt, err := l.svcCtx.UserModel.FindByPage(l.ctx, in.PageNum, in.PageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -43,5 +43,6 @@ func (l *GetUserPageLogic) GetUserPage(in *user.GetUserPageReq) (*user.GetUserPa
 	return &user.GetUserPageResp{
 		Users: users,
 		Total: totalPage,
+		Count: cnt,
 	}, nil
 }

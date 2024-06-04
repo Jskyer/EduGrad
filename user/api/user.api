@@ -68,6 +68,7 @@ type (
 	GetUserPageResp {
 		Users []User `json:"users"`
 		Total int64  `json:"total"`
+		Count int64  `json:"count"`
 	}
 	GetUserCondPageReq {
 		Grade    string `form:"grade,optional"`
@@ -78,6 +79,7 @@ type (
 	GetUserCondPageResp {
 		Users []User `json:"users"`
 		Total int64  `json:"total"`
+		Count int64  `json:"count"`
 	}
 )
 
@@ -160,6 +162,7 @@ type (
 	ListTermSortResp {
 		Phases []Phase `json:"phases"`
 		Total  int64   `json:"total"`
+		Count  int64   `json:"count"`
 	}
 	PhaseRelation {
 		Id       string `json:"id"`
@@ -191,6 +194,7 @@ type (
 	ListPhaseRelationResp {
 		Users []User `json:"users"`
 		Total int64  `json:"total"`
+		Count int64  `json:"count"`
 	}
 )
 

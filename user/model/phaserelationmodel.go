@@ -21,7 +21,7 @@ type (
 		InsertMany(ctx context.Context, data []*PhaseRelation) error
 		ExistUseridsInPhaseRelation(ctx context.Context, phaseId string, userids []string) ([]*PhaseRelation, error)
 		FindOneByPhaseid(ctx context.Context, phaseId string) (*PhaseRelation, error)
-		ListByPhaseidAndIdentity(ctx context.Context, phaseId string, identity string, pageNum int64, pageSize int64) ([]*PhaseRelation, int64, error)
+		ListByPhaseidAndIdentity(ctx context.Context, phaseId string, identity string, pageNum int64, pageSize int64) ([]*PhaseRelation, int64, int64, error)
 		ListAllByPhaseidAndIdentity(ctx context.Context, phaseId string, identity string) ([]*PhaseRelation, error)
 		UpdateStudentsPass(ctx context.Context, phaseId string, userids []string, pass int64) (*mongo.UpdateResult, error)
 	}
@@ -93,7 +93,7 @@ func (m *customPhaseRelationModel) FindOneByPhaseid(ctx context.Context, phaseId
 	return &data, nil
 }
 
-func (m *customPhaseRelationModel) ListByPhaseidAndIdentity(ctx context.Context, phaseId string, identity string, pageNum int64, pageSize int64) ([]*PhaseRelation, int64, error) {
+func (m *customPhaseRelationModel) ListByPhaseidAndIdentity(ctx context.Context, phaseId string, identity string, pageNum int64, pageSize int64) ([]*PhaseRelation, int64, int64, error) {
 	var data []*PhaseRelation
 
 	filter := bson.M{"phaseId": phaseId, "identity": identity}
@@ -104,18 +104,18 @@ func (m *customPhaseRelationModel) ListByPhaseidAndIdentity(ctx context.Context,
 
 	err := m.conn.Find(ctx, &data, filter, opts)
 	if err != nil {
-		return nil, 0, err
+		return nil, 0, 0, err
 	}
 
 	cnt, err := m.conn.CountDocuments(ctx, filter)
 	if err != nil {
-		return nil, 0, err
+		return nil, 0, 0, err
 	}
 
 	// 转换为总页数
 	totalPage := (cnt + pageSize - 1) / pageSize
 
-	return data, totalPage, nil
+	return data, totalPage, cnt, nil
 }
 
 func (m *customPhaseRelationModel) ListAllByPhaseidAndIdentity(ctx context.Context, phaseId string, identity string) ([]*PhaseRelation, error) {

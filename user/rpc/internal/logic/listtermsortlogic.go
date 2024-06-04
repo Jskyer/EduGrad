@@ -26,7 +26,7 @@ func NewListTermSortLogic(ctx context.Context, svcCtx *svc.ServiceContext) *List
 
 func (l *ListTermSortLogic) ListTermSort(in *user.ListTermSortReq) (*user.ListTermSortResp, error) {
 	// todo: add your logic here and delete this line
-	phaseModels, totalPage, err := l.svcCtx.PhaseModel.ListByTermSorted(l.ctx, in.PageNum, in.PageSize)
+	phaseModels, totalPage, cnt, err := l.svcCtx.PhaseModel.ListByTermSorted(l.ctx, in.PageNum, in.PageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -39,5 +39,6 @@ func (l *ListTermSortLogic) ListTermSort(in *user.ListTermSortReq) (*user.ListTe
 	return &user.ListTermSortResp{
 		Phases: phases,
 		Total:  totalPage,
+		Count:  cnt,
 	}, nil
 }
