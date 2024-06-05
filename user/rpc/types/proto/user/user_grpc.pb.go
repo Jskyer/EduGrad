@@ -38,6 +38,10 @@ const (
 	User_AddPhaseRelation_FullMethodName   = "/user.User/addPhaseRelation"
 	User_EndPhaseRelation_FullMethodName   = "/user.User/endPhaseRelation"
 	User_ListPhaseRelation_FullMethodName  = "/user.User/listPhaseRelation"
+	User_StulistForTeacher_FullMethodName  = "/user.User/stulistForTeacher"
+	User_PhaseAllowedtist_FullMethodName   = "/user.User/phaseAllowedtist"
+	User_PhaseCommittedtist_FullMethodName = "/user.User/phaseCommittedtist"
+	User_InphaseRelation_FullMethodName    = "/user.User/inphaseRelation"
 )
 
 // UserClient is the client API for User service.
@@ -63,6 +67,10 @@ type UserClient interface {
 	AddPhaseRelation(ctx context.Context, in *AddPhaseRelationReq, opts ...grpc.CallOption) (*AddPhaseRelationResp, error)
 	EndPhaseRelation(ctx context.Context, in *EndPhaseRelationReq, opts ...grpc.CallOption) (*EndPhaseRelationResp, error)
 	ListPhaseRelation(ctx context.Context, in *ListPhaseRelationReq, opts ...grpc.CallOption) (*ListPhaseRelationResp, error)
+	StulistForTeacher(ctx context.Context, in *StulistForTeacherReq, opts ...grpc.CallOption) (*StulistForTeacherResp, error)
+	PhaseAllowedtist(ctx context.Context, in *PhaseAllowedtistReq, opts ...grpc.CallOption) (*PhaseAllowedtistResp, error)
+	PhaseCommittedtist(ctx context.Context, in *PhaseCommittedtistReq, opts ...grpc.CallOption) (*PhaseCommittedtistResp, error)
+	InphaseRelation(ctx context.Context, in *InphaseRelationReq, opts ...grpc.CallOption) (*InphaseRelationResp, error)
 }
 
 type userClient struct {
@@ -244,6 +252,42 @@ func (c *userClient) ListPhaseRelation(ctx context.Context, in *ListPhaseRelatio
 	return out, nil
 }
 
+func (c *userClient) StulistForTeacher(ctx context.Context, in *StulistForTeacherReq, opts ...grpc.CallOption) (*StulistForTeacherResp, error) {
+	out := new(StulistForTeacherResp)
+	err := c.cc.Invoke(ctx, User_StulistForTeacher_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) PhaseAllowedtist(ctx context.Context, in *PhaseAllowedtistReq, opts ...grpc.CallOption) (*PhaseAllowedtistResp, error) {
+	out := new(PhaseAllowedtistResp)
+	err := c.cc.Invoke(ctx, User_PhaseAllowedtist_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) PhaseCommittedtist(ctx context.Context, in *PhaseCommittedtistReq, opts ...grpc.CallOption) (*PhaseCommittedtistResp, error) {
+	out := new(PhaseCommittedtistResp)
+	err := c.cc.Invoke(ctx, User_PhaseCommittedtist_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) InphaseRelation(ctx context.Context, in *InphaseRelationReq, opts ...grpc.CallOption) (*InphaseRelationResp, error) {
+	out := new(InphaseRelationResp)
+	err := c.cc.Invoke(ctx, User_InphaseRelation_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -267,6 +311,10 @@ type UserServer interface {
 	AddPhaseRelation(context.Context, *AddPhaseRelationReq) (*AddPhaseRelationResp, error)
 	EndPhaseRelation(context.Context, *EndPhaseRelationReq) (*EndPhaseRelationResp, error)
 	ListPhaseRelation(context.Context, *ListPhaseRelationReq) (*ListPhaseRelationResp, error)
+	StulistForTeacher(context.Context, *StulistForTeacherReq) (*StulistForTeacherResp, error)
+	PhaseAllowedtist(context.Context, *PhaseAllowedtistReq) (*PhaseAllowedtistResp, error)
+	PhaseCommittedtist(context.Context, *PhaseCommittedtistReq) (*PhaseCommittedtistResp, error)
+	InphaseRelation(context.Context, *InphaseRelationReq) (*InphaseRelationResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -330,6 +378,18 @@ func (UnimplementedUserServer) EndPhaseRelation(context.Context, *EndPhaseRelati
 }
 func (UnimplementedUserServer) ListPhaseRelation(context.Context, *ListPhaseRelationReq) (*ListPhaseRelationResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListPhaseRelation not implemented")
+}
+func (UnimplementedUserServer) StulistForTeacher(context.Context, *StulistForTeacherReq) (*StulistForTeacherResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StulistForTeacher not implemented")
+}
+func (UnimplementedUserServer) PhaseAllowedtist(context.Context, *PhaseAllowedtistReq) (*PhaseAllowedtistResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PhaseAllowedtist not implemented")
+}
+func (UnimplementedUserServer) PhaseCommittedtist(context.Context, *PhaseCommittedtistReq) (*PhaseCommittedtistResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PhaseCommittedtist not implemented")
+}
+func (UnimplementedUserServer) InphaseRelation(context.Context, *InphaseRelationReq) (*InphaseRelationResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InphaseRelation not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -686,6 +746,78 @@ func _User_ListPhaseRelation_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_StulistForTeacher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StulistForTeacherReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).StulistForTeacher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_StulistForTeacher_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).StulistForTeacher(ctx, req.(*StulistForTeacherReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_PhaseAllowedtist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PhaseAllowedtistReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).PhaseAllowedtist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_PhaseAllowedtist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).PhaseAllowedtist(ctx, req.(*PhaseAllowedtistReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_PhaseCommittedtist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PhaseCommittedtistReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).PhaseCommittedtist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_PhaseCommittedtist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).PhaseCommittedtist(ctx, req.(*PhaseCommittedtistReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_InphaseRelation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InphaseRelationReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).InphaseRelation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_InphaseRelation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).InphaseRelation(ctx, req.(*InphaseRelationReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -768,6 +900,22 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "listPhaseRelation",
 			Handler:    _User_ListPhaseRelation_Handler,
+		},
+		{
+			MethodName: "stulistForTeacher",
+			Handler:    _User_StulistForTeacher_Handler,
+		},
+		{
+			MethodName: "phaseAllowedtist",
+			Handler:    _User_PhaseAllowedtist_Handler,
+		},
+		{
+			MethodName: "phaseCommittedtist",
+			Handler:    _User_PhaseCommittedtist_Handler,
+		},
+		{
+			MethodName: "inphaseRelation",
+			Handler:    _User_InphaseRelation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

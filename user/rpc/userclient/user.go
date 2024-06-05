@@ -33,7 +33,10 @@ type (
 	GetUserInfoResp        = user.GetUserInfoResp
 	GetUserPageReq         = user.GetUserPageReq
 	GetUserPageResp        = user.GetUserPageResp
+	InphaseRelationReq     = user.InphaseRelationReq
+	InphaseRelationResp    = user.InphaseRelationResp
 	InstructRelation       = user.InstructRelation
+	InstructUser           = user.InstructUser
 	ListPhaseRelationReq   = user.ListPhaseRelationReq
 	ListPhaseRelationResp  = user.ListPhaseRelationResp
 	ListTermSortReq        = user.ListTermSortReq
@@ -41,9 +44,15 @@ type (
 	LoginReq               = user.LoginReq
 	LoginResp              = user.LoginResp
 	Phase                  = user.Phase
+	PhaseAllowedtistReq    = user.PhaseAllowedtistReq
+	PhaseAllowedtistResp   = user.PhaseAllowedtistResp
+	PhaseCommittedtistReq  = user.PhaseCommittedtistReq
+	PhaseCommittedtistResp = user.PhaseCommittedtistResp
 	PhaseRelation          = user.PhaseRelation
 	RegisterReq            = user.RegisterReq
 	RegisterResp           = user.RegisterResp
+	StulistForTeacherReq   = user.StulistForTeacherReq
+	StulistForTeacherResp  = user.StulistForTeacherResp
 	UpdateInstructReq      = user.UpdateInstructReq
 	UpdateInstructResp     = user.UpdateInstructResp
 	UpdateProcessReq       = user.UpdateProcessReq
@@ -76,6 +85,10 @@ type (
 		AddPhaseRelation(ctx context.Context, in *AddPhaseRelationReq, opts ...grpc.CallOption) (*AddPhaseRelationResp, error)
 		EndPhaseRelation(ctx context.Context, in *EndPhaseRelationReq, opts ...grpc.CallOption) (*EndPhaseRelationResp, error)
 		ListPhaseRelation(ctx context.Context, in *ListPhaseRelationReq, opts ...grpc.CallOption) (*ListPhaseRelationResp, error)
+		StulistForTeacher(ctx context.Context, in *StulistForTeacherReq, opts ...grpc.CallOption) (*StulistForTeacherResp, error)
+		PhaseAllowedtist(ctx context.Context, in *PhaseAllowedtistReq, opts ...grpc.CallOption) (*PhaseAllowedtistResp, error)
+		PhaseCommittedtist(ctx context.Context, in *PhaseCommittedtistReq, opts ...grpc.CallOption) (*PhaseCommittedtistResp, error)
+		InphaseRelation(ctx context.Context, in *InphaseRelationReq, opts ...grpc.CallOption) (*InphaseRelationResp, error)
 	}
 
 	defaultUser struct {
@@ -182,4 +195,24 @@ func (m *defaultUser) EndPhaseRelation(ctx context.Context, in *EndPhaseRelation
 func (m *defaultUser) ListPhaseRelation(ctx context.Context, in *ListPhaseRelationReq, opts ...grpc.CallOption) (*ListPhaseRelationResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.ListPhaseRelation(ctx, in, opts...)
+}
+
+func (m *defaultUser) StulistForTeacher(ctx context.Context, in *StulistForTeacherReq, opts ...grpc.CallOption) (*StulistForTeacherResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.StulistForTeacher(ctx, in, opts...)
+}
+
+func (m *defaultUser) PhaseAllowedtist(ctx context.Context, in *PhaseAllowedtistReq, opts ...grpc.CallOption) (*PhaseAllowedtistResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.PhaseAllowedtist(ctx, in, opts...)
+}
+
+func (m *defaultUser) PhaseCommittedtist(ctx context.Context, in *PhaseCommittedtistReq, opts ...grpc.CallOption) (*PhaseCommittedtistResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.PhaseCommittedtist(ctx, in, opts...)
+}
+
+func (m *defaultUser) InphaseRelation(ctx context.Context, in *InphaseRelationReq, opts ...grpc.CallOption) (*InphaseRelationResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.InphaseRelation(ctx, in, opts...)
 }

@@ -21,9 +21,12 @@ type (
 		InsertMany(ctx context.Context, data []*PhaseRelation) error
 		ExistUseridsInPhaseRelation(ctx context.Context, phaseId string, userids []string) ([]*PhaseRelation, error)
 		FindOneByPhaseid(ctx context.Context, phaseId string) (*PhaseRelation, error)
+		FindOneByUserid(ctx context.Context, userid string) (*PhaseRelation, error)
 		ListByPhaseidAndIdentity(ctx context.Context, phaseId string, identity string, pageNum int64, pageSize int64) ([]*PhaseRelation, int64, int64, error)
 		ListAllByPhaseidAndIdentity(ctx context.Context, phaseId string, identity string) ([]*PhaseRelation, error)
 		UpdateStudentsPass(ctx context.Context, phaseId string, userids []string, pass int64) (*mongo.UpdateResult, error)
+
+		ListTeachersByPhaseidExceptTids(ctx context.Context, phaseId string, userids []string, pageNum int64, pageSize int64) ([]*PhaseRelation, int64, int64, error)
 	}
 
 	customPhaseRelationModel struct {
@@ -152,4 +155,50 @@ func (m *customPhaseRelationModel) UpdateStudentsPass(ctx context.Context, phase
 	}
 
 	return updateResult, nil
+}
+
+func (m *customPhaseRelationModel) ListTeachersByPhaseidExceptTids(ctx context.Context, phaseId string, userids []string, pageNum int64, pageSize int64) ([]*PhaseRelation, int64, int64, error) {
+	var data []*PhaseRelation
+
+	filter := bson.M{
+		"phaseId":  phaseId,
+		"identity": "导师",
+		"userId": bson.M{
+			"$nin": userids,
+		},
+	}
+
+	opts := new(options.FindOptions)
+	opts.SetSkip((pageNum - 1) * pageSize)
+	opts.SetLimit(pageSize)
+
+	err := m.conn.Find(ctx, &data, filter, opts)
+	if err != nil {
+		return nil, 0, 0, err
+	}
+
+	cnt, err := m.conn.CountDocuments(ctx, filter)
+	if err != nil {
+		return nil, 0, 0, err
+	}
+
+	// 转换为总页数
+	totalPage := (cnt + pageSize - 1) / pageSize
+
+	return data, totalPage, cnt, nil
+}
+
+func (m *customPhaseRelationModel) FindOneByUserid(ctx context.Context, userid string) (*PhaseRelation, error) {
+	var data PhaseRelation
+
+	filter := bson.M{
+		"userId": userid,
+	}
+
+	err := m.conn.FindOne(ctx, &data, filter)
+	if err != nil {
+		return nil, err
+	}
+
+	return &data, nil
 }

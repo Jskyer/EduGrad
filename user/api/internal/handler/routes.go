@@ -82,6 +82,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
+				Path:    "/stulistForTeacher",
+				Handler: stulistForTeacherHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/update",
 				Handler: updateInstructHandler(serverCtx),
 			},
@@ -131,6 +136,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
+				Path:    "/allowedtist",
+				Handler: PhaseAllowedtistHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/comittedtist",
+				Handler: PhaseCommittedtistHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/end",
 				Handler: endPhaseRelationHandler(serverCtx),
 			},
@@ -138,6 +153,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodGet,
 				Path:    "/identitylist",
 				Handler: listPhaseRelationHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/inphase",
+				Handler: InphaseRelationHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),

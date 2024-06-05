@@ -5,11 +5,13 @@ import (
 	"errors"
 	"fmt"
 
+	"edu-grad/user/model"
 	"edu-grad/user/rpc/internal/svc"
 	"edu-grad/user/rpc/types/proto/user"
 
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/zeromicro/go-zero/core/logx"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type EndPhaseRelationLogic struct {
@@ -28,6 +30,11 @@ func NewEndPhaseRelationLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 
 func (l *EndPhaseRelationLogic) EndPhaseRelation(in *user.EndPhaseRelationReq) (*user.EndPhaseRelationResp, error) {
 	// 查询所有该phaseid中是学生的relation
+	oid, err := primitive.ObjectIDFromHex(in.Id)
+	if err != nil {
+		return nil, errors.New("id不合法")
+	}
+
 	phaseRelationMods, err := l.svcCtx.PhaseRelationModel.ListAllByPhaseidAndIdentity(l.ctx, in.Id, "学生")
 	if err != nil {
 		return nil, err
@@ -100,7 +107,17 @@ func (l *EndPhaseRelationLogic) EndPhaseRelation(in *user.EndPhaseRelationReq) (
 		}
 	}
 
+	data := model.Phase{
+		ID:      oid,
+		Process: 3,
+	}
+
+	endUpt, err := l.svcCtx.PhaseModel.Update(l.ctx, &data)
+	if err != nil {
+		return nil, err
+	}
+
 	return &user.EndPhaseRelationResp{
-		Ok: 1,
+		Ok: endUpt.ModifiedCount,
 	}, nil
 }

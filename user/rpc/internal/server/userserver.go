@@ -116,3 +116,23 @@ func (s *UserServer) ListPhaseRelation(ctx context.Context, in *user.ListPhaseRe
 	l := logic.NewListPhaseRelationLogic(ctx, s.svcCtx)
 	return l.ListPhaseRelation(in)
 }
+
+func (s *UserServer) StulistForTeacher(ctx context.Context, in *user.StulistForTeacherReq) (*user.StulistForTeacherResp, error) {
+	l := logic.NewStulistForTeacherLogic(ctx, s.svcCtx)
+	return l.StulistForTeacher(in)
+}
+
+func (s *UserServer) PhaseAllowedtist(ctx context.Context, in *user.PhaseAllowedtistReq) (*user.PhaseAllowedtistResp, error) {
+	l := logic.NewPhaseAllowedtistLogic(ctx, s.svcCtx)
+	return l.PhaseAllowedtist(in)
+}
+
+func (s *UserServer) PhaseCommittedtist(ctx context.Context, in *user.PhaseCommittedtistReq) (*user.PhaseCommittedtistResp, error) {
+	l := logic.NewPhaseCommittedtistLogic(ctx, s.svcCtx)
+	return l.PhaseCommittedtist(in)
+}
+
+func (s *UserServer) InphaseRelation(ctx context.Context, in *user.InphaseRelationReq) (*user.InphaseRelationResp, error) {
+	l := logic.NewInphaseRelationLogic(ctx, s.svcCtx)
+	return l.InphaseRelation(in)
+}

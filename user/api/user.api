@@ -196,6 +196,52 @@ type (
 		Total int64  `json:"total"`
 		Count int64  `json:"count"`
 	}
+	InstructUser {
+		Id       string `json:"id"`
+		Username string `json:"username"`
+		Password string `json:"password"`
+		Identity string `json:"identity"`
+		Grade    string `json:"grade"`
+		Permit   string `json:"permit"`
+	}
+	StulistForTeacherReq {
+		Teacherid string `json:"teacherid"`
+		Permit    string `json:"permit"`
+		PageNum   int64  `json:"pageNum"`
+		PageSize  int64  `json:"pageSize"`
+	}
+	StulistForTeacherResp {
+		Users []User `json:"users"`
+		Total int64  `json:"total"`
+		Count int64  `json:"count"`
+	}
+	PhaseAllowedtistReq {
+		Phaseid  string `json:"phaseid"`
+		Stuid    string `json:"stuid"`
+		PageNum  int64  `json:"pageNum"`
+		PageSize int64  `json:"pageSize"`
+	}
+	PhaseAllowedtistResp {
+		Users []User `json:"users"`
+		Total int64  `json:"total"`
+		Count int64  `json:"count"`
+	}
+	PhaseCommittedtistReq {
+		Stuid    string `json:"stuid"`
+		PageNum  int64  `json:"pageNum"`
+		PageSize int64  `json:"pageSize"`
+	}
+	PhaseCommittedtistResp {
+		Users []InstructUser `json:"users"`
+		Total int64          `json:"total"`
+		Count int64          `json:"count"`
+	}
+	InphaseRelationReq {
+		Userid string `json:"userid"`
+	}
+	InphaseRelationResp {
+		Phaseid string `json:"phaseid"`
+	}
 )
 
 @server (
@@ -255,6 +301,9 @@ service user {
 
 	@handler updateState
 	post /updateState (UpdateStateReq) returns (UpdateStateResp)
+
+	@handler stulistForTeacher
+	post /stulistForTeacher (StulistForTeacherReq) returns (StulistForTeacherResp)
 }
 
 @server (
@@ -285,6 +334,15 @@ service user {
 
 	@handler listPhaseRelation
 	get /identitylist (ListPhaseRelationReq) returns (ListPhaseRelationResp)
+
+	@handler PhaseAllowedtist
+	post /allowedtist (PhaseAllowedtistReq) returns (PhaseAllowedtistResp)
+
+	@handler PhaseCommittedtist
+	post /comittedtist (PhaseCommittedtistReq) returns (PhaseCommittedtistResp)
+
+	@handler InphaseRelation
+	post /inphase (InphaseRelationReq) returns (InphaseRelationResp)
 }
 
 // goctl api go -api user/api/user.api -dir user/api

@@ -221,6 +221,61 @@ message ListPhaseRelationResp {
   int64 count = 3;
 }
 
+message InstructUser {
+  string id = 1;
+  string username = 2;
+  string password = 3;
+  string identity = 4;
+  string grade = 5;
+  string permit = 6;
+}
+
+message StulistForTeacherReq {
+  string teacherid = 1;
+  string permit = 2;
+  int64 pageNum = 3;
+  int64 pageSize = 4;
+}
+
+message StulistForTeacherResp {
+  repeated UserInfo users = 1;
+  int64 total = 2;
+  int64 count = 3;
+}
+
+message PhaseAllowedtistReq {
+  string phaseid = 1;
+  string stuid = 2;
+  int64 pageNum = 3;
+  int64 pageSize = 4;
+}
+
+message PhaseAllowedtistResp {
+  repeated UserInfo users = 1;
+  int64 total = 2;
+  int64 count = 3;
+}
+
+message PhaseCommittedtistReq {
+  string stuid = 1;
+  int64 pageNum = 2;
+  int64 pageSize = 3;
+}
+
+message PhaseCommittedtistResp {
+  repeated InstructUser users = 1;
+  int64 total = 2;
+  int64 count = 3;
+}
+
+message InphaseRelationReq {
+  string userid = 1;
+}
+
+message InphaseRelationResp {
+  string phaseid = 1;
+}
+
 service User {
   rpc login(LoginReq) returns(LoginResp);
   rpc register(RegisterReq) returns(RegisterResp);
@@ -245,6 +300,11 @@ service User {
   rpc endPhaseRelation(EndPhaseRelationReq) returns (EndPhaseRelationResp);
   rpc listPhaseRelation(ListPhaseRelationReq) returns (ListPhaseRelationResp);
 
+  rpc stulistForTeacher(StulistForTeacherReq) returns (StulistForTeacherResp);
+  rpc phaseAllowedtist(PhaseAllowedtistReq) returns (PhaseAllowedtistResp);
+  rpc phaseCommittedtist(PhaseCommittedtistReq) returns (PhaseCommittedtistResp);
+  rpc inphaseRelation(InphaseRelationReq) returns (InphaseRelationResp);
+  
 }
 
 // goctl rpc protoc user/rpc/user.proto --go_out=user/rpc/types --go-grpc_out=user/rpc/types --zrpc_out=user/rpc/

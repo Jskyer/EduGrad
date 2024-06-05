@@ -95,6 +95,14 @@ type GetUserPageResp struct {
 	Count int64  `json:"count"`
 }
 
+type InphaseRelationReq struct {
+	Userid string `json:"userid"`
+}
+
+type InphaseRelationResp struct {
+	Phaseid string `json:"phaseid"`
+}
+
 type InstructRelation struct {
 	Id          string `json:"id"`
 	StuID       string `json:"stuId"`
@@ -104,6 +112,15 @@ type InstructRelation struct {
 	Permit      string `json:"permit"`
 	State       string `json:"state"`
 	Title       string `json:"title"`
+}
+
+type InstructUser struct {
+	Id       string `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Identity string `json:"identity"`
+	Grade    string `json:"grade"`
+	Permit   string `json:"permit"`
 }
 
 type ListPhaseRelationReq struct {
@@ -148,6 +165,31 @@ type Phase struct {
 	Process int64  `json:"process"`
 }
 
+type PhaseAllowedtistReq struct {
+	Phaseid  string `json:"phaseid"`
+	Stuid    string `json:"stuid"`
+	PageNum  int64  `json:"pageNum"`
+	PageSize int64  `json:"pageSize"`
+}
+
+type PhaseAllowedtistResp struct {
+	Users []User `json:"users"`
+	Total int64  `json:"total"`
+	Count int64  `json:"count"`
+}
+
+type PhaseCommittedtistReq struct {
+	Stuid    string `json:"stuid"`
+	PageNum  int64  `json:"pageNum"`
+	PageSize int64  `json:"pageSize"`
+}
+
+type PhaseCommittedtistResp struct {
+	Users []InstructUser `json:"users"`
+	Total int64          `json:"total"`
+	Count int64          `json:"count"`
+}
+
 type PhaseRelation struct {
 	Id       string `json:"id"`
 	PhaseId  string `json:"phaseId"`
@@ -165,6 +207,19 @@ type RegisterReq struct {
 
 type RegisterResp struct {
 	Ok int64 `json:"ok"`
+}
+
+type StulistForTeacherReq struct {
+	Teacherid string `json:"teacherid"`
+	Permit    string `json:"permit"`
+	PageNum   int64  `json:"pageNum"`
+	PageSize  int64  `json:"pageSize"`
+}
+
+type StulistForTeacherResp struct {
+	Users []User `json:"users"`
+	Total int64  `json:"total"`
+	Count int64  `json:"count"`
 }
 
 type UpdateInstructReq struct {
