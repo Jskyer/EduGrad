@@ -18,11 +18,12 @@ type (
 		userModel
 		FindOneByName(ctx context.Context, username string) (*User, error)
 		FindByPage(ctx context.Context, pageNum int64, pageSize int64) ([]*User, int64, int64, error)
-		FindPageByGradeAndIdentity(ctx context.Context, identity string, grade string, pageNum int64, pageSize int64) ([]*User, int64, int64, error)
+		FindPageByGradeAndIdentity(ctx context.Context, identity string, grade string, pageNum int64, pageSize int64, userids []primitive.ObjectID) ([]*User, int64, int64, error)
 		FindStuById(ctx context.Context, id string) (*User, error)
 		FindTeacherById(ctx context.Context, id string) (*User, error)
 		ListTeacherOrStuByGrade(ctx context.Context, grade string) ([]*User, error)
 		ListByUserids(ctx context.Context, userids []string) ([]*User, error)
+		FindByPageExceptIds(ctx context.Context, pageNum int64, pageSize int64, userids []primitive.ObjectID) ([]*User, int64, int64, error)
 	}
 
 	customUserModel struct {
@@ -78,10 +79,15 @@ func (m *customUserModel) FindByPage(ctx context.Context, pageNum int64, pageSiz
 	return data, totalPage, cnt, nil
 }
 
-func (m *customUserModel) FindPageByGradeAndIdentity(ctx context.Context, identity string, grade string, pageNum int64, pageSize int64) ([]*User, int64, int64, error) {
+func (m *customUserModel) FindPageByGradeAndIdentity(ctx context.Context, identity string, grade string, pageNum int64, pageSize int64, userids []primitive.ObjectID) ([]*User, int64, int64, error) {
 	var data []*User
 
-	filter := bson.M{}
+	filter := bson.M{
+		"_id": bson.M{
+			"$nin": userids,
+		},
+	}
+
 	if identity != "" {
 		filter["identity"] = identity
 	}
@@ -189,4 +195,35 @@ func (m *customUserModel) ListByUserids(ctx context.Context, userids []string) (
 	}
 
 	return data, nil
+}
+
+func (m *customUserModel) FindByPageExceptIds(ctx context.Context, pageNum int64, pageSize int64, userids []primitive.ObjectID) ([]*User, int64, int64, error) {
+	var data []*User
+
+	filter := bson.M{
+		"_id": bson.M{
+			"$nin": userids,
+		},
+	}
+
+	opts := new(options.FindOptions)
+	opts.SetSkip((pageNum - 1) * pageSize)
+	opts.SetLimit(pageSize)
+
+	// 分页查询列表
+	err := m.conn.Find(ctx, &data, filter, opts)
+	if err != nil {
+		return nil, 0, 0, err
+	}
+
+	// 对应filter的记录总数
+	cnt, err := m.conn.CountDocuments(ctx, filter)
+	if err != nil {
+		return nil, 0, 0, err
+	}
+
+	// 转换为总页数
+	totalPage := (cnt + pageSize - 1) / pageSize
+
+	return data, totalPage, cnt, nil
 }

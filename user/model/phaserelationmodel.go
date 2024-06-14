@@ -25,8 +25,8 @@ type (
 		ListByPhaseidAndIdentity(ctx context.Context, phaseId string, identity string, pageNum int64, pageSize int64) ([]*PhaseRelation, int64, int64, error)
 		ListAllByPhaseidAndIdentity(ctx context.Context, phaseId string, identity string) ([]*PhaseRelation, error)
 		UpdateStudentsPass(ctx context.Context, phaseId string, userids []string, pass int64) (*mongo.UpdateResult, error)
-
 		ListTeachersByPhaseidExceptTids(ctx context.Context, phaseId string, userids []string, pageNum int64, pageSize int64) ([]*PhaseRelation, int64, int64, error)
+		ListAllUserids(ctx context.Context) ([]*PhaseRelation, error)
 	}
 
 	customPhaseRelationModel struct {
@@ -201,4 +201,24 @@ func (m *customPhaseRelationModel) FindOneByUserid(ctx context.Context, userid s
 	}
 
 	return &data, nil
+}
+
+func (m *customPhaseRelationModel) ListAllUserids(ctx context.Context) ([]*PhaseRelation, error) {
+	var data []*PhaseRelation
+
+	project := bson.M{
+		"userId": 1,
+		"_id":    0,
+	}
+	opts := options.FindOptions{Projection: project}
+
+	// opts := new(options.FindOptions)
+	// opts.SetProjection(project)
+
+	err := m.conn.Find(ctx, &data, bson.M{}, &opts)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
 }
