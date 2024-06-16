@@ -242,6 +242,14 @@ type (
 	InphaseRelationResp {
 		Phaseid string `json:"phaseid"`
 	}
+	PhaseInfoReq {
+		Phaseid string `json:"phaseid"`
+	}
+	PhaseInfoResp {
+		ID      string `json:"id"`
+		Term    string `json:"term"`
+		Process int64  `json:"process"`
+	}
 )
 
 @server (
@@ -319,6 +327,9 @@ service user {
 
 	@handler listTermSort
 	get /termlist (ListTermSortReq) returns (ListTermSortResp)
+
+	@handler phaseInfo
+	post /phaseinfo (PhaseInfoReq) returns (PhaseInfoResp)
 }
 
 @server (

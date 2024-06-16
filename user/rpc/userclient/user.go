@@ -48,6 +48,8 @@ type (
 	PhaseAllowedtistResp   = user.PhaseAllowedtistResp
 	PhaseCommittedtistReq  = user.PhaseCommittedtistReq
 	PhaseCommittedtistResp = user.PhaseCommittedtistResp
+	PhaseInfoReq           = user.PhaseInfoReq
+	PhaseInfoResp          = user.PhaseInfoResp
 	PhaseRelation          = user.PhaseRelation
 	RegisterReq            = user.RegisterReq
 	RegisterResp           = user.RegisterResp
@@ -82,6 +84,7 @@ type (
 		AddPhase(ctx context.Context, in *AddPhaseReq, opts ...grpc.CallOption) (*AddPhaseResp, error)
 		UpdateProcess(ctx context.Context, in *UpdateProcessReq, opts ...grpc.CallOption) (*UpdateProcessResp, error)
 		ListTermSort(ctx context.Context, in *ListTermSortReq, opts ...grpc.CallOption) (*ListTermSortResp, error)
+		GetPhaseinfo(ctx context.Context, in *PhaseInfoReq, opts ...grpc.CallOption) (*PhaseInfoResp, error)
 		AddPhaseRelation(ctx context.Context, in *AddPhaseRelationReq, opts ...grpc.CallOption) (*AddPhaseRelationResp, error)
 		EndPhaseRelation(ctx context.Context, in *EndPhaseRelationReq, opts ...grpc.CallOption) (*EndPhaseRelationResp, error)
 		ListPhaseRelation(ctx context.Context, in *ListPhaseRelationReq, opts ...grpc.CallOption) (*ListPhaseRelationResp, error)
@@ -180,6 +183,11 @@ func (m *defaultUser) UpdateProcess(ctx context.Context, in *UpdateProcessReq, o
 func (m *defaultUser) ListTermSort(ctx context.Context, in *ListTermSortReq, opts ...grpc.CallOption) (*ListTermSortResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.ListTermSort(ctx, in, opts...)
+}
+
+func (m *defaultUser) GetPhaseinfo(ctx context.Context, in *PhaseInfoReq, opts ...grpc.CallOption) (*PhaseInfoResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.GetPhaseinfo(ctx, in, opts...)
 }
 
 func (m *defaultUser) AddPhaseRelation(ctx context.Context, in *AddPhaseRelationReq, opts ...grpc.CallOption) (*AddPhaseRelationResp, error) {

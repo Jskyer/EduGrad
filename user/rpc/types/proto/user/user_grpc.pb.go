@@ -35,6 +35,7 @@ const (
 	User_AddPhase_FullMethodName           = "/user.User/addPhase"
 	User_UpdateProcess_FullMethodName      = "/user.User/updateProcess"
 	User_ListTermSort_FullMethodName       = "/user.User/listTermSort"
+	User_GetPhaseinfo_FullMethodName       = "/user.User/getPhaseinfo"
 	User_AddPhaseRelation_FullMethodName   = "/user.User/addPhaseRelation"
 	User_EndPhaseRelation_FullMethodName   = "/user.User/endPhaseRelation"
 	User_ListPhaseRelation_FullMethodName  = "/user.User/listPhaseRelation"
@@ -64,6 +65,7 @@ type UserClient interface {
 	AddPhase(ctx context.Context, in *AddPhaseReq, opts ...grpc.CallOption) (*AddPhaseResp, error)
 	UpdateProcess(ctx context.Context, in *UpdateProcessReq, opts ...grpc.CallOption) (*UpdateProcessResp, error)
 	ListTermSort(ctx context.Context, in *ListTermSortReq, opts ...grpc.CallOption) (*ListTermSortResp, error)
+	GetPhaseinfo(ctx context.Context, in *PhaseInfoReq, opts ...grpc.CallOption) (*PhaseInfoResp, error)
 	AddPhaseRelation(ctx context.Context, in *AddPhaseRelationReq, opts ...grpc.CallOption) (*AddPhaseRelationResp, error)
 	EndPhaseRelation(ctx context.Context, in *EndPhaseRelationReq, opts ...grpc.CallOption) (*EndPhaseRelationResp, error)
 	ListPhaseRelation(ctx context.Context, in *ListPhaseRelationReq, opts ...grpc.CallOption) (*ListPhaseRelationResp, error)
@@ -225,6 +227,15 @@ func (c *userClient) ListTermSort(ctx context.Context, in *ListTermSortReq, opts
 	return out, nil
 }
 
+func (c *userClient) GetPhaseinfo(ctx context.Context, in *PhaseInfoReq, opts ...grpc.CallOption) (*PhaseInfoResp, error) {
+	out := new(PhaseInfoResp)
+	err := c.cc.Invoke(ctx, User_GetPhaseinfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userClient) AddPhaseRelation(ctx context.Context, in *AddPhaseRelationReq, opts ...grpc.CallOption) (*AddPhaseRelationResp, error) {
 	out := new(AddPhaseRelationResp)
 	err := c.cc.Invoke(ctx, User_AddPhaseRelation_FullMethodName, in, out, opts...)
@@ -308,6 +319,7 @@ type UserServer interface {
 	AddPhase(context.Context, *AddPhaseReq) (*AddPhaseResp, error)
 	UpdateProcess(context.Context, *UpdateProcessReq) (*UpdateProcessResp, error)
 	ListTermSort(context.Context, *ListTermSortReq) (*ListTermSortResp, error)
+	GetPhaseinfo(context.Context, *PhaseInfoReq) (*PhaseInfoResp, error)
 	AddPhaseRelation(context.Context, *AddPhaseRelationReq) (*AddPhaseRelationResp, error)
 	EndPhaseRelation(context.Context, *EndPhaseRelationReq) (*EndPhaseRelationResp, error)
 	ListPhaseRelation(context.Context, *ListPhaseRelationReq) (*ListPhaseRelationResp, error)
@@ -369,6 +381,9 @@ func (UnimplementedUserServer) UpdateProcess(context.Context, *UpdateProcessReq)
 }
 func (UnimplementedUserServer) ListTermSort(context.Context, *ListTermSortReq) (*ListTermSortResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListTermSort not implemented")
+}
+func (UnimplementedUserServer) GetPhaseinfo(context.Context, *PhaseInfoReq) (*PhaseInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPhaseinfo not implemented")
 }
 func (UnimplementedUserServer) AddPhaseRelation(context.Context, *AddPhaseRelationReq) (*AddPhaseRelationResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddPhaseRelation not implemented")
@@ -692,6 +707,24 @@ func _User_ListTermSort_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_GetPhaseinfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PhaseInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetPhaseinfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_GetPhaseinfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetPhaseinfo(ctx, req.(*PhaseInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _User_AddPhaseRelation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AddPhaseRelationReq)
 	if err := dec(in); err != nil {
@@ -888,6 +921,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "listTermSort",
 			Handler:    _User_ListTermSort_Handler,
+		},
+		{
+			MethodName: "getPhaseinfo",
+			Handler:    _User_GetPhaseinfo_Handler,
 		},
 		{
 			MethodName: "addPhaseRelation",

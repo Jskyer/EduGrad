@@ -113,6 +113,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: addPhaseHandler(serverCtx),
 			},
 			{
+				Method:  http.MethodPost,
+				Path:    "/phaseinfo",
+				Handler: phaseInfoHandler(serverCtx),
+			},
+			{
 				Method:  http.MethodGet,
 				Path:    "/termlist",
 				Handler: listTermSortHandler(serverCtx),

@@ -190,6 +190,16 @@ type PhaseCommittedtistResp struct {
 	Count int64          `json:"count"`
 }
 
+type PhaseInfoReq struct {
+	Phaseid string `json:"phaseid"`
+}
+
+type PhaseInfoResp struct {
+	ID      string `json:"id"`
+	Term    string `json:"term"`
+	Process int64  `json:"process"`
+}
+
 type PhaseRelation struct {
 	Id       string `json:"id"`
 	PhaseId  string `json:"phaseId"`

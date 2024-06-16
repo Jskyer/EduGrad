@@ -276,6 +276,15 @@ message InphaseRelationResp {
   string phaseid = 1;
 }
 
+message PhaseInfoReq {
+  string phaseid = 1;
+}
+message PhaseInfoResp {
+  string id = 1;
+  string term = 2;
+  int64 process = 3;
+}
+
 service User {
   rpc login(LoginReq) returns(LoginResp);
   rpc register(RegisterReq) returns(RegisterResp);
@@ -295,11 +304,12 @@ service User {
   rpc addPhase(AddPhaseReq) returns (AddPhaseResp);
   rpc updateProcess(UpdateProcessReq) returns (UpdateProcessResp);
   rpc listTermSort(ListTermSortReq) returns (ListTermSortResp);
+  rpc getPhaseinfo(PhaseInfoReq) returns (PhaseInfoResp);
 
   rpc addPhaseRelation(AddPhaseRelationReq) returns (AddPhaseRelationResp);
   rpc endPhaseRelation(EndPhaseRelationReq) returns (EndPhaseRelationResp);
   rpc listPhaseRelation(ListPhaseRelationReq) returns (ListPhaseRelationResp);
-
+ 
   rpc stulistForTeacher(StulistForTeacherReq) returns (StulistForTeacherResp);
   rpc phaseAllowedtist(PhaseAllowedtistReq) returns (PhaseAllowedtistResp);
   rpc phaseCommittedtist(PhaseCommittedtistReq) returns (PhaseCommittedtistResp);

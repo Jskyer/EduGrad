@@ -102,6 +102,11 @@ func (s *UserServer) ListTermSort(ctx context.Context, in *user.ListTermSortReq)
 	return l.ListTermSort(in)
 }
 
+func (s *UserServer) GetPhaseinfo(ctx context.Context, in *user.PhaseInfoReq) (*user.PhaseInfoResp, error) {
+	l := logic.NewGetPhaseinfoLogic(ctx, s.svcCtx)
+	return l.GetPhaseinfo(in)
+}
+
 func (s *UserServer) AddPhaseRelation(ctx context.Context, in *user.AddPhaseRelationReq) (*user.AddPhaseRelationResp, error) {
 	l := logic.NewAddPhaseRelationLogic(ctx, s.svcCtx)
 	return l.AddPhaseRelation(in)
